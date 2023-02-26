@@ -16,13 +16,38 @@ const setUpApplyButton = function () {
         pointsArray.push(point[1])
     })
     console.log(pointsArray)
-    utils.loadImageToCanvas(imageUsed, 'imageInit')
+    //utils.loadImageToCanvas(imageUsed, 'imageInit')
     setTimeout(()=>{
+    /*
     let src = cv.imread('imageInit');
     const imageHeight = document.getElementById('imageInit').height
     const imageWidth = document.getElementById('imageInit').width
+    */
+    let src = cv.imread('canvas');
+    const imageHeight = document.getElementById('canvas').height
+    const imageWidth = document.getElementById('canvas').width
+    //
+    /*
     const svgCropHeight =  document.querySelector('#background svg').getAttribute('height') - 80
     const svgCropWidth =  document.querySelector('#background svg').getAttribute('width') - 80
+    */
+    let dimxTopL=round(TopL.x)
+    let dimxTopL=round(TopL.x)
+    let dimxTopL=round(TopL.x)
+    let dimxTopL=round(TopL.x)
+    let dimxTopL=round(TopL.y)
+    let dimxTopL=round(TopL.y)
+    let dimxTopL=round(TopL.y)
+    let dimxTopL=round(TopL.y)
+    const svgCropHeight = 0//QR高さ
+    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)
+    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)
+    const svgCropWidth = 0//QR幅
+    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)-Math.min(TopL.x,TopR.x,BotL.x,BotR.x)
+    //QR高さを求めます
+    
+    
+
     console.log('h : ',svgCropHeight,' w : ',svgCropWidth)
     const scaleFactor = parseInt(imageWidth / svgCropWidth)
     debugger
