@@ -148,9 +148,6 @@ camera.start()
         canvasElement.height = video.videoHeight;
         canvasElement.width = video.videoWidth;
         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        //
-        imageInit.drawImage(video, 0, 0, canvasElement.width, canvasElement.height)
-        //
         var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
         var code = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
@@ -165,6 +162,7 @@ camera.start()
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+          console.log(topL)
 
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
