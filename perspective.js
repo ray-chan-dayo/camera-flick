@@ -5,17 +5,17 @@ const applyButton = document.getElementById('apply')
 const setUpApplyButton = function () { 
     //console.log(cv)
     
-    let pointsArray = []
-    const children = document.querySelectorAll('#window_g .handle')
-    console.log(children)
+    let pointsArray = [];
+    const children = document.querySelectorAll('#window_g .handle');
+    console.log(children);
     children.forEach(e =>{
         const pos = e.getAttribute('transform');
-        console.dir(pos)
-        const point = pos.replace('translate(','').replace(')','').split(',')
-        pointsArray.push(point[0])
-        pointsArray.push(point[1])
-    })
-    console.log(pointsArray)
+        console.dir(pos);
+        const point = pos.replace('translate(','').replace(')','').split(',');
+        pointsArray.push(point[0]);
+        pointsArray.push(point[1]);
+    });
+    console.log(pointsArray);
     //utils.loadImageToCanvas(imageUsed, 'imageInit')
     setTimeout(()=>{
     /*
@@ -31,19 +31,17 @@ const setUpApplyButton = function () {
     const svgCropHeight =  document.querySelector('#background svg').getAttribute('height') - 80
     const svgCropWidth =  document.querySelector('#background svg').getAttribute('width') - 80
     */
-    let dimxTopL=round(TopL.x)
-    let dimxTopL=round(TopL.x)
-    let dimxTopL=round(TopL.x)
-    let dimxTopL=round(TopL.x)
-    let dimxTopL=round(TopL.y)
-    let dimxTopL=round(TopL.y)
-    let dimxTopL=round(TopL.y)
-    let dimxTopL=round(TopL.y)
-    const svgCropHeight = 0//QR高さ
-    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)
-    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)
-    const svgCropWidth = 0//QR幅
-    Math.max(TopL.x,TopR.x,BotL.x,BotR.x)-Math.min(TopL.x,TopR.x,BotL.x,BotR.x)
+    let dimxTopL=round(TopL.x);
+    let dimxTopR=round(TopR.x);
+    let dimxBotR=round(BotR.x);
+    let dimxBotL=round(BotL.x);
+    let dimyTopL=round(TopL.y);
+    let dimyTopR=round(TopR.y);
+    let dimyBotR=round(BotR.y);
+    let dimyBotL=round(BotL.y);
+    const svgCropHeight = Math.max(dimyTopL,dimyTopR,dimyBotR,dimyBotL)-Math.min(dimyTopL,dimyTopR,dimyBotR,dimyBotL)
+    const svgCropWidth = Math.max(dimxTopL,dimxTopR,dimxBotR,dimxBotL)-Math.min(dimxTopL,dimxTopR,dimxBotR,dimxBotL)
+
     //QR高さを求めます
     
     
