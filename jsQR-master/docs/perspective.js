@@ -2,12 +2,18 @@ const utils = new Utils('errorMessage');
 //const imageUsed = document.getElementById('sample').getAttribute('src')
 //console.log(imageUsed)
 const applyButton = document.getElementById('apply')
-const setUpApplyButton = function setUpApplyButton(corners) { 
+const setUpApplyButton = function setUpApplyButton(tl, tr, br, bl) { 
     //console.log(cv)
-    let pointsArray = []
-    //
-    let xArray = []
-    let yArray = []
+    let pointsArray = [
+        Math.round(tl.x),
+        Math.round(tl.y),
+        Math.round(canvasElement.width-tr.x),
+        Math.round(tr.y),
+        Math.round(canvasElement.width-br.x),
+        Math.round(canvasElement.height-br.y),
+        Math.round(bl.x),
+        Math.round(canvasElement.height-bl.y)
+    ]
     /*const children = document.querySelectorAll('#window_g .handle')
     console.log(children)
     children.forEach(e =>{
@@ -17,18 +23,9 @@ const setUpApplyButton = function setUpApplyButton(corners) {
         pointsArray.push(point[0])
         pointsArray.push(point[1])
     })*/
-    corners.forEach(element => {
-        pointsArray.push(element.x)
-        //
-        xArray.push(element.x)
-        yArray.push(element.y)
-        //
-        pointsArray.push(element.y)
-    });
-    //
     console.log(pointsArray)
     //utils.loadImageToCanvas(imageUsed, 'imageInit')imageinitはcanvasのID
-    setTimeout(()=>{
+    //setTimeout(()=>{
     //let src = cv.imread('imageInit');
     let src = cv.imread('canvas');
     //const imageHeight = document.getElementById('imageInit').height
@@ -36,14 +33,34 @@ const setUpApplyButton = function setUpApplyButton(corners) {
     //const imageWidth = document.getElementById('imageInit').width
     const imageWidth = document.getElementById('canvas').width
     //const svgCropHeight =  document.querySelector('#background svg').getAttribute('height') - 80//wont work
-    const svgCropHeight = Math.max(yArray)-Math.min(yArray)
+    const svgCropHeight = Math.max(
+            Math.round(tl.y),
+            Math.round(tr.y),
+            Math.round(br.y),
+            Math.round(bl.y)
+        )-Math.min(
+            Math.round(tl.y),
+            Math.round(tr.y),
+            Math.round(br.y),
+            Math.round(bl.y)
+        )
     //const svgCropWidth =  document.querySelector('#background svg').getAttribute('width') - 80//wont work
-    const svgCropWidth = Math.max(xArray)-Math.min(xArray)
+    const svgCropWidth = Math.max(
+            Math.round(tl.x),
+            Math.round(tr.x),
+            Math.round(br.x),
+            Math.round(bl.x)
+        ) - Math.min(
+            Math.round(tl.x),
+            Math.round(tr.x),
+            Math.round(br.x),
+            Math.round(bl.x)
+        )
     console.log('h : ',svgCropHeight,' w : ',svgCropWidth)
     const scaleFactor = parseInt(imageWidth / svgCropWidth)
-    debugger
+    //debugger
     pointsArray = pointsArray.map( e => {
-        const num = parseInt((parseInt(e) + 40)/scaleFactor)
+        const num = parseInt((parseInt(e)/* + 40*/)/scaleFactor)
         return num
     })
     let dst = new cv.Mat();
@@ -53,10 +70,10 @@ const setUpApplyButton = function setUpApplyButton(corners) {
     let M = cv.getPerspectiveTransform(srcTri, dstTri);
     cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
     //document.getElementById('imageInit').style.display = "none"
-    document.getElementById('canvas').style.display = "none"
+    //document.getElementById('canvas').style.display = "none"
     cv.imshow('imageResult', dst);
     src.delete(); dst.delete(); M.delete(); srcTri.delete(); dstTri.delete();
-    },500)
+    //},500)
     
         
 }

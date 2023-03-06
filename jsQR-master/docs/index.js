@@ -1,7 +1,7 @@
 const attachCropBox = function (imgWidth,imgHeight) { 
     
     console.log('image loaded : ',imgWidth ,' ', imgHeight)
-    var margin = {top: 40, right: 40, bottom: 40, left: 40},
+    var margin = {top: 0, right: 0, bottom: 0, left: 0},
     width = imgWidth - margin.left - margin.right,
     height = imgHeight - margin.top - margin.bottom;
 
@@ -92,14 +92,14 @@ const attachCropBox = function (imgWidth,imgHeight) {
 
 window.onload = function() {
     
-    var img = new Image();
-    img.onload = function () {
-        const imgWidth = img.width;
-        const imgHeight = img.height;
+    //var img = new Image();
+    //img.onload = function () {
+        const imgWidth = 640;
+        const imgHeight = 480;
         attachCropBox(imgWidth,imgHeight)
-    }
+    //}
     //img.crossOrigin = "anonymous"
-    img.src = "bill.png";
+    //img.src = "bill.png";
 }
 
 
