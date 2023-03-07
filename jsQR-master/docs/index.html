@@ -58,16 +58,10 @@
   <p>Pure JavaScript QR code decoding library.</p>
   <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
   <canvas id="canvas" hidden></canvas>
-  <canvas id="imageResult"></canvas>
   <div id="output" hidden>
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
-  <script src="utils.js" type="text/javascript"></script>
-  <script src="perspective.js" type="text/javascript"></script>
-  <script src="./libs/d3.v3.min.js"></script>
-  <script src="./libs/numeric-solve.min.js"></script>
-  <script src="./index.js"></script>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -76,8 +70,6 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
-    //
-    var args
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -115,13 +107,6 @@
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-          setUpApplyButton(
-            code.location.topLeftCorner,
-            code.location.topRightCorner,
-            code.location.bottomRightCorner,
-            code.location.bottomLeftCorner
-          )
-          console.log(code.location.topLeftCorner)
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
