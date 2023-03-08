@@ -62,6 +62,7 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
+  <script type="text/javascript" src="perspective-transform.min.js"></script>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -70,6 +71,12 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    const dstCorners = [
+      0, 0,
+      1000, 0,
+      1000, 1000,
+      0, 1000
+    ];
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -107,6 +114,18 @@
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+
+          const srcCorners = [
+            code.location.topLeftCorner.x, code.location.topLeftCorner.y,
+            code.location.topRightCorner.x, code.location.topRightCorner.y,
+            code.location.bottomRightCorner.x, code.location.bottomRightCorner.y,
+            code.location.bottomLeftCorner.x, code.location.bottomLeftCorner.y
+          ];
+          const perspT = PerspT(srcCorners, dstCorners);
+          const dstPt = perspT.transform(code.location.topLeftFinderPattern.x, code.location.topLeftFinderPattern.y);
+
+          console.log(dstPt)
+
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
