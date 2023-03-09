@@ -77,7 +77,7 @@
       1000, 1000,
       0, 1000
     ];
-
+/*
     function drawLine(begin, end, color) {
       canvas.beginPath();
       canvas.moveTo(begin.x, begin.y);
@@ -86,7 +86,7 @@
       canvas.strokeStyle = color;
       canvas.stroke();
     }
-
+*/
     // Use facingMode: environment to attemt to get the front camera on phones
     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
       video.srcObject = stream;
@@ -110,11 +110,12 @@
           inversionAttempts: "dontInvert",
         });
         if (code) {
+          /*
           drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-
+          */
           const srcCorners = [
             code.location.topLeftCorner.x, code.location.topLeftCorner.y,
             code.location.topRightCorner.x, code.location.topRightCorner.y,
