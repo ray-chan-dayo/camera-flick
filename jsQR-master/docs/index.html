@@ -4,6 +4,10 @@
   <title>jsQR Demo</title>
   <script src="./jsQR.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <style>
     body {
       font-family: 'Ropa Sans', sans-serif;
@@ -64,79 +68,95 @@
   </div>
   <script type="text/javascript" src="perspective-transform.min.js"></script>
   <script>
+    "use strict"
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
-    var canvas = canvasElement.getContext("2d");
+    var canvas = canvasElement.getContext("2d", { willReadFrequently: true });
     var loadingMessage = document.getElementById("loadingMessage");
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
     const dstCorners = [
       0, 0,
-      1000, 0,
-      1000, 1000,
-      0, 1000
+      1440, 0,
+      1440, 1440,
+      0, 1440
     ];
-/*
-    function drawLine(begin, end, color) {
-      canvas.beginPath();
-      canvas.moveTo(begin.x, begin.y);
-      canvas.lineTo(end.x, end.y);
-      canvas.lineWidth = 4;
-      canvas.strokeStyle = color;
-      canvas.stroke();
-    }
-*/
-    // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      video.play();
-      requestAnimationFrame(tick);
+    var globalresult
+    loadingMessage.innerText = "⌛ Loading video..."
+
+    const config = {
+      locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+    };
+    const hands = new Hands(config);
+    const camera = new Camera(video, {
+        onFrame: async () => {
+//
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                loadingMessage.hidden = true;
+                canvasElement.hidden = false;
+                outputContainer.hidden = false;
+                canvasElement.height = video.videoHeight;
+                canvasElement.width = video.videoWidth;
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                var code = jsQR(imageData.data, imageData.width, imageData.height, {
+                  inversionAttempts: "dontInvert",
+                });
+                if (code) {
+                    const srcCorners = [
+                      code.location.topLeftCorner.x, code.location.topLeftCorner.y,
+                      code.location.topRightCorner.x, code.location.topRightCorner.y,
+                      code.location.bottomRightCorner.x, code.location.bottomRightCorner.y,
+                      code.location.bottomLeftCorner.x, code.location.bottomLeftCorner.y
+                    ];
+                    const perspT = PerspT(srcCorners, dstCorners);
+                    outputMessage.hidden = true;
+                    outputData.parentElement.hidden = false;
+                    outputData.innerText = code.data;
+                    if (globalresult.multiHandLandmarks[0]) {
+                      const dstPt = perspT.transform(
+                        (globalresult.multiHandLandmarks[0][8].x)*1280,
+                        (globalresult.multiHandLandmarks[0][8].y)*720
+                      );
+                      console.log(dstPt)
+                      if (0<dstPt[0] && dstPt[0]<1500 && 1440<dstPt[1] && dstPt[1]<3000) {
+                        console.log("ift")
+                      }
+
+                    }
+                }
+            } else {
+              outputMessage.hidden = false;
+              outputData.parentElement.hidden = true;
+            }
+//
+            await hands.send({image: video});
+          },
+          width: 1280,
+          height: 720
     });
-
-    function tick() {
-      loadingMessage.innerText = "⌛ Loading video..."
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        loadingMessage.hidden = true;
-        canvasElement.hidden = false;
-        outputContainer.hidden = false;
-
-        canvasElement.height = video.videoHeight;
-        canvasElement.width = video.videoWidth;
-        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        var code = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: "dontInvert",
-        });
-        if (code) {
-          /*
-          drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-          drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-          drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-          drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-          */
-          const srcCorners = [
-            code.location.topLeftCorner.x, code.location.topLeftCorner.y,
-            code.location.topRightCorner.x, code.location.topRightCorner.y,
-            code.location.bottomRightCorner.x, code.location.bottomRightCorner.y,
-            code.location.bottomLeftCorner.x, code.location.bottomLeftCorner.y
-          ];
-          const perspT = PerspT(srcCorners, dstCorners);
-          const dstPt = perspT.transform(code.location.topLeftFinderPattern.x, code.location.topLeftFinderPattern.y);
-
-          console.log(dstPt)
-
-          outputMessage.hidden = true;
-          outputData.parentElement.hidden = false;
-          outputData.innerText = code.data;
-        } else {
-          outputMessage.hidden = false;
-          outputData.parentElement.hidden = true;
+    hands.setOptions({
+        maxNumHands: 2,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+    });
+    hands.onResults(results => {
+        if(results.multiHandLandmarks) {
+            //results.multiHandLandmarks.forEach(marks => {
+                
+                // 緑色の線で骨組みを可視化
+                //drawConnectors(ctx2nd, marks, HAND_CONNECTIONS, {color: '#0f0'});
+                
+                
+                // 赤色でランドマークを可視化
+                //drawLandmarks(ctx2nd, marks, {color: '#f00'});
+            //})
+            globalresult = results
         }
-      }
-      requestAnimationFrame(tick);
-    }
+    });
+    camera.start()
   </script>
 </body>
 </html>
