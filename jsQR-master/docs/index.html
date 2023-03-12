@@ -66,7 +66,9 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
+  <button onclick="audiobutton()">enable</button>
   <script type="text/javascript" src="perspective-transform.min.js"></script>
+  <script src="../../tracking.js-master/build/tracking-min.js"></script>
   <script>
     "use strict"
     var video = document.createElement("video");
@@ -82,16 +84,41 @@
       1440, 1440,
       0, 1440
     ];
+    let synthlist = []
     var globalresult
+    let audioCtx
+    function audiobutton() {
+      audioCtx = new AudioContext();
+    }
     loadingMessage.innerText = "⌛ Loading video..."
-
+    function synthstart(freq) {
+      if (!synthlist[freq]) {
+        //正弦波の音を作成
+        const osciillator = audioCtx.createOscillator();
+        //ヘルツ（周波数）指定
+        osciillator.frequency.value = freq;
+        //音の出力先
+        const audioDestination = audioCtx.destination;
+        //出力先のスピーカーに接続
+        osciillator.connect(audioDestination);
+        //音を出す
+        osciillator.start = osciillator.start || osciillator.noteOn; //クロスブラウザ対応
+        osciillator.start();
+        synthlist[freq] = osciillator
+      }
+    }
+    function synthstop(freq) {
+      if(synthlist[freq]) {
+        synthlist[freq].stop()
+        synthlist[freq] = false
+      }
+    }
     const config = {
       locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
     };
     const hands = new Hands(config);
     const camera = new Camera(video, {
         onFrame: async () => {
-//
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
                 loadingMessage.hidden = true;
                 canvasElement.hidden = false;
@@ -99,6 +126,22 @@
                 canvasElement.height = video.videoHeight;
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                //
+      var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+
+      colors.on('track', function(event) {
+        if (event.data.length === 0) {
+          // No colors were detected in this frame.
+          console.log("none detected")
+        } else {
+          event.data.forEach(function(rect) {
+            console.log(rect.x, rect.y, rect.height, rect.width, rect.color);
+          });
+        }
+      });
+    
+      tracking.track(canvasElement, colors);
+/*
                 var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
                 var code = jsQR(imageData.data, imageData.width, imageData.height, {
                   inversionAttempts: "dontInvert",
@@ -121,16 +164,23 @@
                       );
                       console.log(dstPt)
                       if (0<dstPt[0] && dstPt[0]<1500 && 1440<dstPt[1] && dstPt[1]<3000) {
-                        console.log("ift")
+                        synthstart(440)
+                      }else {
+                        synthstop(440)
+                      }
+                      if (1500<dstPt[0] && dstPt[0]<3000 && 1440<dstPt[1] && dstPt[1]<3000) {
+                        synthstart(392)
+                      }else {
+                        synthstop(392)
                       }
 
                     }
                 }
+*/
             } else {
               outputMessage.hidden = false;
               outputData.parentElement.hidden = true;
             }
-//
             await hands.send({image: video});
           },
           width: 1280,
