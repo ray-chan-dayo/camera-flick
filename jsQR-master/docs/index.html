@@ -127,7 +127,7 @@
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                 //
-      var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+      var colors = new tracking.ColorTracker(['magenta']);
 
       colors.on('track', function(event) {
         if (event.data.length === 0) {
