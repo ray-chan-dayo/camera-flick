@@ -79,6 +79,14 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    function drawLine(begin, end, color) {
+      canvas.beginPath();
+      canvas.moveTo(begin.x, begin.y);
+      canvas.lineTo(end.x, end.y);
+      canvas.lineWidth = 4;
+      canvas.strokeStyle = color;
+      canvas.stroke();
+    }
     const dstCorners = [
       0, 0,
       1440, 0,
@@ -128,20 +136,92 @@
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                 //
-      var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+                var colors = new tracking.ColorTracker(['cyan']);
+                      
+                colors.on('track', function(event) {
+                  if (event.data.length === 0) {
+                    // No colors were detected in this frame.
+                    // panpan.textContent = "none detected"
+                  } else {
+                    //console.log(event.data)
+                    /*
+                    event.data.forEach(function(rect) {
+                      panpan.textContent = "x: "+ rect["x"] +"<br>y: "+ rect.y +"<br>h: "+ rect.height +"<br>w: "+ rect.width +"<br>c: "+ rect.color
+                    });*/
+                    if (event.data.length == 4) {
+                      let arrayY = [],
+                          arrayTopX = [],
+                          arrayBotX = [],
+                          numTemp
+                        for (let i = 0; i < 4; i++) {
+                          arrayY[i] = event.data[i].y
+                        }
+                        const j = arrayY.indexOf(Math.max(...arrayY))
+                        arrayY[j] = 0
+                        const k = arrayY.indexOf(Math.max(...arrayY))
+                        console.log(event.data)
+                        console.log(j)
+                        console.log(k)
+                        for (let i = 0; i < 4; i++) {
+                          if (i==j||i==k) {
+                            arrayTopX[i] = event.data[i].x
+                            arrayBotX[i] = 0
+                          }else {
+                            arrayBotX[i] = event.data[i].x
+                            arrayTopX[i] = 0
+                          }
+                        }
+                        const tp = event.data[arrayTopX.indexOf(numTemp = Math.max(...arrayTopX))],
+                              tn = event.data[arrayTopX.findIndex((a)=>a&&a!=numTemp)],
+                              bp = event.data[arrayBotX.indexOf(numTemp = Math.max(...arrayBotX))],
+                              bn = event.data[arrayBotX.findIndex((a)=>a&&a!=numTemp)]
+                        console.log(arrayTopX)
+                        console.log(arrayBotX)
+                        console.log(tp)
+                        console.log(tn)
+                        console.log(bp)
+                        console.log(bn)
+                        const srcCorners = [
+                          tp.x, tp.y,
+                          tn.x, tn.y,
+                          bn.x, bn.y,
+                          bp.x, bp.y
+                        ]
+                        drawLine(tp, tn, "#FF3B58");
+                        drawLine(tn, bn, "#FF3B58");
+                        drawLine(bn, bp, "#FF3B58");
+                        drawLine(bp, tp, "#FF3B58");
+                        const perspT = PerspT(srcCorners, dstCorners);
+                        if (globalresult&&globalresult.multiHandLandmarks[0]) {
+                            const dstPt = perspT.transform(
+                              (globalresult.multiHandLandmarks[0][8].x)*1280,
+                              (globalresult.multiHandLandmarks[0][8].y)*720
+                            );
+                            console.log(dstPt)
 
-      colors.on('track', function(event) {
-        if (event.data.length === 0) {
-          // No colors were detected in this frame.
-          panpan.textContent = "none detected"
-        } else {
-          event.data.forEach(function(rect) {
-            panpan.textContent = "x: "+ rect.x +"<br>y: "+ rect.y +"<br>h: "+ rect.height +"<br>w: "+ rect.width +"<br>c: "+ rect.color
-          });
-        }
-      });
-    
-      tracking.track(canvasElement, colors);
+                            //ド
+                            if (-640<dstPt[0] && dstPt[0]<-320 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            //レ
+                            if (-320<dstPt[0] && dstPt[0]<0 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            //ミ
+                            if (0<dstPt[0] && dstPt[0]<320 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            //ファ
+                            if (320<dstPt[0] && dstPt[0]<640 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(349.23)} else {synthstop(349.23)}
+                            //ソ
+                            if (640<dstPt[0] && dstPt[0]<960 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(392)} else {synthstop(392)}
+                            //ラ
+                            if (960<dstPt[0] && dstPt[0]<1280 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(440)} else {synthstop(440)}
+                            //シ
+                            if (1280<dstPt[0] && dstPt[0]<1600 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(493.88)}else {synthstop(493.88)}
+                        }else {
+
+                        }
+                    }
+                    
+                  }
+                });
+              
+                tracking.track(canvasElement, colors);
 /*
                 var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
                 var code = jsQR(imageData.data, imageData.width, imageData.height, {
