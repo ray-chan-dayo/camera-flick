@@ -66,7 +66,6 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
-  <button onclick="audiobutton()">enable</button>
   <div id="panpan"></div>
   <script type="text/javascript" src="perspective-transform.min.js"></script>
   <script src="../../tracking.js-master/build/tracking-min.js"></script>
@@ -96,9 +95,6 @@
     let synthlist = []
     var globalresult
     let audioCtx
-    function audiobutton() {
-      audioCtx = new AudioContext();
-    }
     loadingMessage.innerText = "⌛ Loading video..."
     function synthstart(freq) {
       if (!synthlist[freq]) {
@@ -200,21 +196,23 @@
                             console.log(dstPt)
 
                             //ド
-                            if (-640<dstPt[0] && dstPt[0]<-320 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            if (-800<dstPt[0] && dstPt[0]<-320 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(261.63)} else {synthstop(261.63)}
                             //レ
-                            if (-320<dstPt[0] && dstPt[0]<0 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            if (-320<dstPt[0] && dstPt[0]<0 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(293.67)} else {synthstop(293.67)}
                             //ミ
-                            if (0<dstPt[0] && dstPt[0]<320 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(329.63)} else {synthstop(329.63)}
+                            if (0<dstPt[0] && dstPt[0]<320 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(329.63)} else {synthstop(329.63)}
                             //ファ
-                            if (320<dstPt[0] && dstPt[0]<640 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(349.23)} else {synthstop(349.23)}
+                            if (320<dstPt[0] && dstPt[0]<640 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(349.23)} else {synthstop(349.23)}
                             //ソ
-                            if (640<dstPt[0] && dstPt[0]<960 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(392)} else {synthstop(392)}
+                            if (640<dstPt[0] && dstPt[0]<960 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(392)} else {synthstop(392)}
                             //ラ
-                            if (960<dstPt[0] && dstPt[0]<1280 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(440)} else {synthstop(440)}
+                            if (960<dstPt[0] && dstPt[0]<1280 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(440)} else {synthstop(440)}
                             //シ
-                            if (1280<dstPt[0] && dstPt[0]<1600 && 1440<dstPt[1] && dstPt[1]<5000) {synthstart(493.88)}else {synthstop(493.88)}
+                            if (1280<dstPt[0] && dstPt[0]<1600 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(493.88)}else {synthstop(493.88)}
                         }else {
-
+                          Object.keys(synthlist).forEach(f => {
+                            synthstop(f)
+                          });
                         }
                     }
                     
@@ -288,6 +286,9 @@
         }
     });
     camera.start()
+    if (window.confirm("音が出ます")) {
+      audioCtx = new AudioContext();
+    }
   </script>
 </body>
 </html>
