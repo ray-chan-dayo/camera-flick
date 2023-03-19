@@ -199,19 +199,19 @@
                             console.log(dstPt)
 
                             //ド
-                            if (-1000<dstPt[0] && dstPt[0]<-320 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(261.63)} else {synthstop(261.63)}
+                            if (-1000<dstPt[0] && dstPt[0]<-480 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(261.63)} else {synthstop(261.63)}
                             //レ
-                            if (-320<dstPt[0] && dstPt[0]<0 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(293.67)} else {synthstop(293.67)}
+                            if (-480<dstPt[0] && dstPt[0]<-160 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(293.67)} else {synthstop(293.67)}
                             //ミ
-                            if (0<dstPt[0] && dstPt[0]<320 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(329.63)} else {synthstop(329.63)}
+                            if (-160<dstPt[0] && dstPt[0]<160 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(329.63)} else {synthstop(329.63)}
                             //ファ
-                            if (320<dstPt[0] && dstPt[0]<640 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(349.23)} else {synthstop(349.23)}
+                            if (480<dstPt[0] && dstPt[0]<800 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(349.23)} else {synthstop(349.23)}
                             //ソ
-                            if (640<dstPt[0] && dstPt[0]<960 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(392)} else {synthstop(392)}
+                            if (800<dstPt[0] && dstPt[0]<1120 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(392)} else {synthstop(392)}
                             //ラ
-                            if (960<dstPt[0] && dstPt[0]<1280 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(440)} else {synthstop(440)}
+                            if (1120<dstPt[0] && dstPt[0]<1440 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(440)} else {synthstop(440)}
                             //シ
-                            if (1280<dstPt[0] && dstPt[0]<1600 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(493.88)}else {synthstop(493.88)}
+                            if (1440<dstPt[0] && dstPt[0]<2000 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(493.88)}else {synthstop(493.88)}
                         }else {
                           Object.keys(synthlist).forEach(f => {
                             synthstop(f)
