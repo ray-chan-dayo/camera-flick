@@ -158,9 +158,9 @@
                         const j = arrayY.indexOf(Math.max(...arrayY))
                         arrayY[j] = 0
                         const k = arrayY.indexOf(Math.max(...arrayY))
-                        console.log(event.data)
-                        console.log(j)
-                        console.log(k)
+                        //console.log(event.data)
+                        //console.log(j)
+                        //console.log(k)
                         for (let i = 0; i < 4; i++) {
                           if (i==j||i==k) {
                             arrayTopX[i] = event.data[i].x
@@ -174,12 +174,12 @@
                               tn = event.data[arrayTopX.findIndex((a)=>a&&a!=numTemp)],
                               bp = event.data[arrayBotX.indexOf(numTemp = Math.max(...arrayBotX))],
                               bn = event.data[arrayBotX.findIndex((a)=>a&&a!=numTemp)]
-                        console.log(arrayTopX)
-                        console.log(arrayBotX)
-                        console.log(tp)
-                        console.log(tn)
-                        console.log(bp)
-                        console.log(bn)
+                        //console.log(arrayTopX)
+                        //console.log(arrayBotX)
+                        //console.log(tp)
+                        //console.log(tn)
+                        //console.log(bp)
+                        //console.log(bn)
                         const srcCorners = [
                           tp.x, tp.y,
                           tn.x, tn.y,
@@ -196,7 +196,7 @@
                               (globalresult.multiHandLandmarks[0][8].x)*1280,
                               (globalresult.multiHandLandmarks[0][8].y)*720
                             );
-                            console.log(dstPt)
+                            //console.log(dstPt)
 
                             //ド
                             if (-1000<dstPt[0] && dstPt[0]<-480 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(261.63)} else {synthstop(261.63)}
@@ -244,7 +244,7 @@
                         (globalresult.multiHandLandmarks[0][8].x)*1280,
                         (globalresult.multiHandLandmarks[0][8].y)*720
                       );
-                      console.log(dstPt)
+                      //console.log(dstPt)
                       if (0<dstPt[0] && dstPt[0]<1500 && 1440<dstPt[1] && dstPt[1]<3000) {
                         synthstart(440)
                       }else {
