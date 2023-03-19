@@ -201,17 +201,17 @@
                             //ド
                             if (-1000<dstPt[0] && dstPt[0]<-480 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(261.63)} else {synthstop(261.63)}
                             //レ
-                            if (-480<dstPt[0] && dstPt[0]<-160 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(293.67)} else {synthstop(293.67)}
+                            if (-480<dstPt[0] && dstPt[0]<-124 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(293.67)} else {synthstop(293.67)}
                             //ミ
-                            if (-160<dstPt[0] && dstPt[0]<160 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(329.63)} else {synthstop(329.63)}
+                            if (-124<dstPt[0] && dstPt[0]<232 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(329.63)} else {synthstop(329.63)}
                             //ファ
-                            if (480<dstPt[0] && dstPt[0]<800 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(349.23)} else {synthstop(349.23)}
+                            if (232<dstPt[0] && dstPt[0]<558 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(349.23)} else {synthstop(349.23)}
                             //ソ
-                            if (800<dstPt[0] && dstPt[0]<1120 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(392)} else {synthstop(392)}
+                            if (558<dstPt[0] && dstPt[0]<994 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(392)} else {synthstop(392)}
                             //ラ
-                            if (1120<dstPt[0] && dstPt[0]<1440 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(440)} else {synthstop(440)}
+                            if (994<dstPt[0] && dstPt[0]<1300 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(440)} else {synthstop(440)}
                             //シ
-                            if (1440<dstPt[0] && dstPt[0]<2000 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(493.88)}else {synthstop(493.88)}
+                            if (1300<dstPt[0] && dstPt[0]<2000 && 1440<dstPt[1] && dstPt[1]<4000) {synthstart(493.88)}else {synthstop(493.88)}
                         }else {
                           Object.keys(synthlist).forEach(f => {
                             synthstop(f)
