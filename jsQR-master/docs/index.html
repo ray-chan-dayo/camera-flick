@@ -53,6 +53,10 @@
     #noQRFound {
       text-align: center;
     }
+
+    #panpan {
+      font-size: 100px;
+    }
   </style>
 </head>
 <body>
@@ -65,7 +69,7 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
-  <div id="panpan"></div>
+  <button id="panpan" onclick="audioCtx = new AudioContext();">enable</button>
   <script type="text/javascript" src="perspective-transform.min.js"></script>
   <script src="../../tracking.js-master/build/tracking-min.js"></script>
   <script>

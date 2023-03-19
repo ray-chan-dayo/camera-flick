@@ -20,7 +20,7 @@ k.h);}}var k=this;null==this.g?l.h(g):this.g.push(g);this.o=!0};b.resolve=f;b.re
 var K="function"==typeof Object.assign?Object.assign:function(a,b){for(var e=1;e<arguments.length;e++){var f=arguments[e];if(f)for(var h in f)Object.prototype.hasOwnProperty.call(f,h)&&(a[h]=f[h])}return a};v("Object.assign",function(a){return a||K});var L=this||self;var M={facingMode:"user",width:640,height:480};function N(a,b){this.video=a;this.i=0;this.h=Object.assign(Object.assign({},M),b)}N.prototype.stop=function(){var a=this,b,e,f,h;return J(new I(new B(function(l){if(a.g){b=a.g.getTracks();e=x(b);for(f=e.next();!f.done;f=e.next())h=f.value,h.stop();a.g=void 0}l.j=0})))};
 N.prototype.start=function(){var a=this,b;return J(new I(new B(function(e){navigator.mediaDevices&&navigator.mediaDevices.getUserMedia||alert("No navigator.mediaDevices.getUserMedia exists.");b=a.h;
 //
-return e.return(navigator.mediaDevices.getUserMedia({video:{facingMode:b.facingMode,width:b.width,height:b.height,facingMode: { exact: "environment" }}})
+return e.return(navigator.mediaDevices.getUserMedia({video:{facingMode:b.facingMode,width:b.width,height:b.height,facingMode: { ideal: "environment" }}})
 //
 .then(function(f){O(a,f)}).catch(function(f){var h="Failed to acquire camera feed: "+f;console.error(h);alert(h);throw f;}))})))};
 function P(a){window.requestAnimationFrame(function(){Q(a)})}function O(a,b){a.g=b;a.video.srcObject=b;a.video.onloadedmetadata=function(){a.video.play();P(a)}}function Q(a){var b=null;a.video.paused||a.video.currentTime===a.i||(a.i=a.video.currentTime,b=a.h.onFrame());b?b.then(function(){P(a)}):P(a)}var R=["Camera"],S=L;R[0]in S||"undefined"==typeof S.execScript||S.execScript("var "+R[0]);
